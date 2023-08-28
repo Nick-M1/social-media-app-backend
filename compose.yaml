@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  neo4j-db:
+    image: neo4j:latest
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+  postgresql-db:
+    image: postgres:latest
+    environment:
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    ports:
+      - '5432'
+
+#  example:
+#    build:
+#      context: ..
+#      dockerfile: .devcontainer/Dockerfile
+#    volumes:
+#      - ..:/workspace
+#    links:
+#      - database
+#    environment:
+#      - ORG_NEO4J_DRIVER_URI=bolt://database:7687
+#    ports:
+#      - "8080:8080"
+#    command: sleep infinity
