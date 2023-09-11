@@ -1,12 +1,23 @@
+server:
+  port: 8085
 spring:
+  application:
+    name: social-graph-service
   neo4j:
     uri: bolt://localhost:7687
     authentication:
       username: neo4j
       password: password
-
 logging:
   level:
     org.hibernate:
       SQL: DEBUG
       type.descriptor.sql.BasicBinder: TRACE
+    com.netflix:
+      eureka: OFF
+      discovery: OFF
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

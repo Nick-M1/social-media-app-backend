@@ -11,6 +11,7 @@ public class PostrgesDataInit {
     @Bean
     public CommandLineRunner postgresDataInitializer(UserDetailsRepository userDetailsRepository) {
         return args -> {
+            System.out.println("HELLO");
             userDetailsRepository.deleteAll();
 
             var user1 = new UserDetails("username", "password", "firstname", "lastname", "email@gmail.com", "phonenumber", "profileimg");

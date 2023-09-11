@@ -1,2 +1,26 @@
-# PostgreSQL Database
-spring.jpa.hibernate.ddl-auto: create-drop
+server:
+  port: 8086
+
+spring:
+  application:
+    name: user-details-service
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: http://localhost:5432
+
+logging:
+  level:
+    org.hibernate:
+      SQL: DEBUG
+      type.descriptor.sql.BasicBinder: TRACE
+    com.netflix:
+      eureka: OFF
+      discovery: OFF
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
