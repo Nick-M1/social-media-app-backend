@@ -8,6 +8,8 @@ services:
     ports:
       - "7474:7474"
       - "7687:7687"
+    networks:
+      - social-media-app-backend_default
 
   postgresql-db:
     image: postgres:latest
@@ -17,19 +19,47 @@ services:
       - 'POSTGRES_USER=myuser'
     ports:
       - '5432'
+    networks:
+      - social-media-app-backend_default
 
-#  elasticsearch-db:
+  mongodb:
+    image: 'mongo:latest'
+    environment:
+      - 'MONGO_INITDB_DATABASE=mydatabase'
+      - 'MONGO_INITDB_ROOT_PASSWORD=secret'
+      - 'MONGO_INITDB_ROOT_USERNAME=root'
+    ports:
+      - '27017'
+    networks:
+      - social-media-app-backend_default
+
+  elasticsearch-db:
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.17.10'
+    environment:
+      - 'ELASTIC_PASSWORD=secret'
+      - 'discovery.type=single-node'
+      - 'xpack.security.enabled=false'
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    networks:
+      - social-media-app-backend_default
+
 #    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.1
+##    image: blacktop/elasticsearch:7.10
 #    network_mode: host
 #    environment:
-#      - discovery.type=single-node
-#      - cluster.name=jgBay-cluster
-#      - bootstrap.memory_lock=true
-#      - "xpack.security.enabled=false"
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+##      - discovery.type=single-node
+##      - cluster.name=cluster
+##      - bootstrap.memory_lock=true
+##      - "xpack.security.enabled=false"
+###      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - 'ELASTIC_PASSWORD=secret'
+#      - 'discovery.type=single-node'
+#      - 'xpack.security.enabled=false'
 #    ports:
-#      - "9200:9200"
-#      - "9300:9300"
+#      - "9200"
+##      - "9300"
 
 #  example:
 #    build:
@@ -44,3 +74,7 @@ services:
 #    ports:
 #      - "8080:8080"
 #    command: sleep infinity
+
+networks:
+  social-media-app-backend_default:
+    external: true

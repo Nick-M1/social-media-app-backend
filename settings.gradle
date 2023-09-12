@@ -7,6 +7,7 @@ pluginManagement {
 }
 
 rootProject.name = 'social-media-app-backend'
+include 'eureka-server'
+include 'posts-service'
 include 'social-graph-service'
 include 'user-details-service'
-include 'eureka-server'

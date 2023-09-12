@@ -13,9 +13,9 @@ spring:
 
 logging:
   level:
-    org.hibernate:
-      SQL: DEBUG
-      type.descriptor.sql.BasicBinder: TRACE
+#    org.hibernate:
+#      SQL: DEBUG
+#      type.descriptor.sql.BasicBinder: TRACE
     com.netflix:
       eureka: OFF
       discovery: OFF
