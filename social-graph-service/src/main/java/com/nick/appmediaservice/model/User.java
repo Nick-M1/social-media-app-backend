@@ -11,38 +11,25 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @Node
 public class User {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private String id;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
-
-    @NotBlank
-    private String username;
-    @NotBlank
-    private String firstName;
-    @NotBlank
-    private String lastName;
-    @NotBlank
-    private String profilePicture;
+    private String userId;
 
     @Relationship(type = "IS_FOLLOWING", direction = Relationship.Direction.OUTGOING)
     private Set<UserFollow> following;
+    @Relationship(type = "POST_LIKED", direction = Relationship.Direction.OUTGOING)
+    private Set<Post> likedPosts;   //todo bookmarked posts
 
-    public User(String username, String firstName, String lastName, String profilePicture, Set<UserFollow> following) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.profilePicture = profilePicture;
-        this.following = following;
+    public User(String userId) {
+        this.userId = userId;
+        this.following = new HashSet<>();
+        this.likedPosts = new HashSet<>();
     }
 }

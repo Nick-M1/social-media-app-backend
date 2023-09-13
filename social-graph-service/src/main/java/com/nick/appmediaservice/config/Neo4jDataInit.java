@@ -11,7 +11,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -59,12 +58,12 @@ public class Neo4jDataInit {
             postRepository.deleteAll().block();
             commentRepository.deleteAll().block();
 
-            var user1 = new User("username_1", "1", "1", "1", new HashSet<>());
-            var user2 = new User("username_2", "2", "2", "2", new HashSet<>());
+            var user1 = new User("1");
+            var user2 = new User("2");
             user2.setFollowing(Set.of(new UserFollow(user1)));
             userRepository.saveAll(List.of(user1, user2)).collectList().block();
 
-            var post1 = new Post(user1, "post_1", List.of());
+            var post1 = new Post("post_1", user1);
             var comment1 = new Comment("comment_1", post1, null, user1);
             var comment2 = new Comment("comment_2", post1, null, user1);
             var comment3 = new Comment("comment_3", post1, comment2, user2);

@@ -18,7 +18,7 @@ public class UserFollow {       //todo isRequestPending...
     private User followedUser;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private long createdAt;
 
     public UserFollow(User followedUser) {
         this.followedUser = followedUser;

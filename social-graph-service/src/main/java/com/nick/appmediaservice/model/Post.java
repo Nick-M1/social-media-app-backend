@@ -18,22 +18,13 @@ public class Post {
     @GeneratedValue
     private String id;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    private String postId;
 
     @Relationship(type = "CREATED_BY", direction = Relationship.Direction.OUTGOING)
     private User userCreatedBy;
 
-    private String description;
-    private List<String> images;
-
-
-    public Post(User userCreatedBy, String description, List<String> images) {
+    public Post(String postId, User userCreatedBy) {
+        this.postId = postId;
         this.userCreatedBy = userCreatedBy;
-        this.description = description;
-        this.images = images;
     }
 }

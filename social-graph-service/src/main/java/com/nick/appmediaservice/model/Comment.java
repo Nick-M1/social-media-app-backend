@@ -1,6 +1,5 @@
 package com.nick.appmediaservice.model;
 
-import jakarta.annotation.Nullable;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -18,9 +17,10 @@ public class Comment {
     private String id;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private long createdAt;
 
     private String description;     // and title, image... in elastic
+    private Boolean isDeleted;
 
     @Relationship(type = "COMMENT_TO_POST", direction = Relationship.Direction.OUTGOING)
     private Post post;
@@ -33,6 +33,7 @@ public class Comment {
 
     public Comment(String description, Post post, Comment parentComment, User userCreatedBy) {
         this.description = description;
+        this.isDeleted = false;
         this.post = post;
         this.parentComment = parentComment;
         this.userCreatedBy = userCreatedBy;

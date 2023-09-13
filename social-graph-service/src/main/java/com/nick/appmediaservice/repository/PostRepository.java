@@ -6,7 +6,17 @@ import org.springframework.data.neo4j.repository.query.Query;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface PostRepository extends ReactiveNeo4jRepository<Post, String> { //todo posts have a user author
+public interface PostRepository extends ReactiveNeo4jRepository<Post, String> {
+
+    @Query("MATCH ()-[r:POST_LIKED]->(n) where ELEMENTID(n) = $id RETURN COUNT(r)")
+    Mono<Long> countOfUserLikesOnPost(String id);
+
+    @Query("""
+            MATCH (post:Post)<-[r:POST_LIKED]-(user:User)
+            WHERE ELEMENTID(user) = $userId
+            RETURN post
+    """)
+    Flux<Post> findPostsLikedByUser(String userId);
 
     @Query("""
             MATCH (post:Post)<-[pr:COMMENT_TO_POST]-(comment:Comment)
