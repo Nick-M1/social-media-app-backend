@@ -1,0 +1,21 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: feed-service
+  data:
+    mongodb:
+      auto-index-creation: true
+
+logging:
+  level:
+    com.netflix:
+      eureka: OFF
+      discovery: OFF
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+

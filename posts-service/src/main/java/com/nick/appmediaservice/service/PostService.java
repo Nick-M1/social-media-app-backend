@@ -4,13 +4,13 @@ import com.nick.appmediaservice.model.Post;
 import com.nick.appmediaservice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,6 +21,14 @@ public class PostService {
 
     public Mono<Post> findPostById(String postId) {
         return postRepository.findById(postId);
+    }
+
+    public Mono<Map<String, Post>> findPostsByIdsMap(Flux<String> postIds) {
+        return postIds.flatMap(postId -> postRepository.findById(postId).map(res -> Map.entry(postId, res)))
+                .collectMap(Map.Entry::getKey, Map.Entry::getValue);
+    }
+    public Flux<Post> findPostsByIdsList(Flux<String> postIds) {
+        return postIds.flatMap(postRepository::findById);
     }
 
     public Flux<Post> findPostsByTextSearch(String queryString) {

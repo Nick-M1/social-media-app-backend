@@ -34,6 +34,12 @@ public class PostService {
         return postRepository.findPostsByUser(userId);
     }
 
+    public Flux<Post> findPostsByUserFollowing(String userId) {
+        return userService.findFollowing(userId)
+                .map(User::getId)
+                .flatMap(this::findPostsByUser);
+    }
+
     public Mono<Post> createPost(String postId, String userCreatedById) {
         return userService.findUserById(userCreatedById)
                 .map(u -> new Post(postId, u))
