@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: user-details-service
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          spring:
+#            issuer-uri: http://localhost:8090
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -24,3 +30,5 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost

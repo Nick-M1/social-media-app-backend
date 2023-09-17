@@ -1,5 +1,6 @@
 package com.nick.appmediaservice.config;
 
+import com.netflix.discovery.EurekaClient;
 import com.nick.appmediaservice.client.PostDetailsClient;
 import com.nick.appmediaservice.client.SocialGraphClient;
 import com.nick.appmediaservice.client.UserDetailsClient;
@@ -14,9 +15,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 public class HttpInterfaceConfig {
 
     @Bean
-    public UserDetailsClient userDetailsClient() {
+    public UserDetailsClient userDetailsClient(EurekaClient discoveryClient) {
+        var clientHostname = discoveryClient.getNextServerFromEureka("USER-DETAILS-SERVICE", false).getHomePageUrl();
+
         var webClient = WebClient.builder()
-                .baseUrl("...")
+                .baseUrl(clientHostname)
                 .build();
 
         return HttpServiceProxyFactory
@@ -26,9 +29,11 @@ public class HttpInterfaceConfig {
     }
 
     @Bean
-    public SocialGraphClient socialGraphClient() {
+    public SocialGraphClient socialGraphClient(EurekaClient discoveryClient) {
+        var clientHostname = discoveryClient.getNextServerFromEureka("SOCIAL-GRAPH-SERVICE", false).getHomePageUrl();
+
         var webClient = WebClient.builder()
-                .baseUrl("...")
+                .baseUrl(clientHostname)
                 .build();
 
         return HttpServiceProxyFactory
@@ -38,9 +43,11 @@ public class HttpInterfaceConfig {
     }
 
     @Bean
-    public PostDetailsClient postDetailsClient() {
+    public PostDetailsClient postDetailsClient(EurekaClient discoveryClient) {
+        var clientHostname = discoveryClient.getNextServerFromEureka("POSTS-SERVICE", false).getHomePageUrl();
+
         var webClient = WebClient.builder()
-                .baseUrl("...")
+                .baseUrl(clientHostname)
                 .build();
 
         return HttpServiceProxyFactory

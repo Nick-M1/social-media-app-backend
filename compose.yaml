@@ -8,8 +8,8 @@ services:
     ports:
       - "7474:7474"
       - "7687:7687"
-    networks:
-      - social-media-app-backend_default
+#    networks:
+#      - social-media-app-backend_default
 
   postgresql-db:
     image: postgres:latest

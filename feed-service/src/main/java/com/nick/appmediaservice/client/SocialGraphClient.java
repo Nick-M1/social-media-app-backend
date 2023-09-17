@@ -6,6 +6,6 @@ import org.springframework.web.service.annotation.GetExchange;
 import reactor.core.publisher.Flux;
 
 public interface SocialGraphClient {
-    @GetExchange("post/following/{id}")
-    Flux<PostNode> findPostsByUserFollowing(@PathVariable String id);
+    @GetExchange("/api/social/post/following/{userId}")
+    Flux<PostNode> findPostsByUserFollowing(@PathVariable String userId);
 }

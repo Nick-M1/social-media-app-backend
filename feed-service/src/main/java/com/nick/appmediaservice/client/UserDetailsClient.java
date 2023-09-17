@@ -10,6 +10,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface UserDetailsClient {
-    @GetExchange("/{userIds}")
+    @GetExchange("/api/user/info/{userIds}")
     Mono<Map<String, UserDetails>> getUsersByIds(@PathVariable List<String> userIds);
 }

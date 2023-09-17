@@ -1,5 +1,6 @@
 package com.nick.appmediaservice;
 
+import com.nick.socialgraphservice.SocialGraphServiceApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.TestConfiguration;
 
