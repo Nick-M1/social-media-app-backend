@@ -19,6 +19,15 @@ spring:
 #          filters:
 #            - CustomJwtFilter
 
+        - id: posts-service
+          uri: lb://POSTS-SERVICE
+          predicates:
+            - Path=/api/post/**
+        - id: social-graph-service
+          uri: lb://SOCIAL-GRAPH-SERVICE
+          predicates:
+            - Path=/api/social/**
+
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem

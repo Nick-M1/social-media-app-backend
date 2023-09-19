@@ -1,5 +1,6 @@
 package com.nick.socialgraphservice.service;
 
+import com.nick.socialgraphservice.dto.CommentRequest;
 import com.nick.socialgraphservice.model.Comment;
 import com.nick.socialgraphservice.repository.CommentRepository;
 import jakarta.transaction.Transactional;
@@ -46,13 +47,13 @@ public class CommentService {
         return commentRepository.findCommentsByUser(userId);
     }
 
-    public Mono<Comment> createComment(String description, String postId, Mono<String> parentCommentId, String userId) {
-        var parentComment = parentCommentId.flatMap(this::findCommentById);
-        var post = postService.findPostById(postId);
-        var user = userService.findUserById(userId);
+    public Mono<Comment> createComment(CommentRequest commentRequest) {
+        var parentComment = commentRequest.parentCommentId().flatMap(this::findCommentById);
+        var post = postService.findPostById(commentRequest.postId());
+        var user = userService.findUserByUserId(commentRequest.userId());
 
         return Mono.zip(parentComment, post, user)
-                .map(tuple -> new Comment(description, tuple.getT2(), tuple.getT1(), tuple.getT3()))
+                .map(tuple -> new Comment(commentRequest.description(), tuple.getT2(), tuple.getT1(), tuple.getT3()))
                 .flatMap(commentRepository::save);
     }
 

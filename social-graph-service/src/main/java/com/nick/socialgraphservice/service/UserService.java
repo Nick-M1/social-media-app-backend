@@ -6,6 +6,7 @@ import com.nick.socialgraphservice.model.relationships.UserFollow;
 import com.nick.socialgraphservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,48 +16,62 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
     public Flux<User> findAllUsers() {
+        log.info("Get all users");
         return userRepository.findAll();
     }
 
-    public Mono<User> findUserById(String id) {
-        return userRepository.findById(id).switchIfEmpty(Mono.error(new RuntimeException()));
+    public Mono<User> findUserByUserId(String userId) {
+        log.info("Get user by id = {}", userId);
+        return userRepository.findUserByUserId(userId)
+                .switchIfEmpty(Mono.error(new RuntimeException()));
     }
     //todo find by example (e.g. for username)
 
     public Mono<Long> countOfFollowing(String id) {
+        log.info("Get count of following by id = {}", id);
         return userRepository.countOfFollowing(id);
     }
     public Mono<Long> countOfFollowers(String id) {
+        log.info("Get count of followers by id = {}", id);
         return userRepository.countOfFollowers(id);
     }
     public Mono<Long> countOfPostsLikedByUser(String id) {
+        log.info("Get count of posts liked by user by userId = {}", id);
         return userRepository.countOfPostsLikedByUser(id);
     }
     public Mono<Boolean> isFollowing(String userId1, String userId2) {
+        log.info("Get boolean if user1 (with id = {}) is following user2 (with id = {})", userId1, userId2);
         return userRepository.isFollowing(userId1, userId2);
     }
     public Mono<Boolean> isLikedPost(String userId, String postId) {
+        log.info("Get boolean if user (with id = {}) is has liked post (with id = {})", userId, postId);
         return userRepository.isLikedPost(userId, postId);
     }
     public Flux<User> findFollowers(String id) {
+        log.info("Get followers of user with id = {}", id);
         return userRepository.findFollowers(id);
     }
     public Flux<User> findFollowing(String id) {
+        log.info("Get following of user with id = {}", id);
         return userRepository.findFollowing(id);
     }
 
     public Mono<User> createUser(UserRequest userRequest) {
-        var user = new User(userRequest.id());
+        log.info("Create user with request = {}", userRequest);
+        var user = userRequest.mapToUser();
         return userRepository.save(user);
     }
 
     @Transactional
     public Mono<User> updateUserFollow(String userIdFollowing, String userIdToFollow, Boolean isFollowing) {
+        log.info("Update user-follow so that user1 (with id = {}) is following ({}) user2 (with id = {})", userIdFollowing, isFollowing, userIdToFollow);
+
         var userFollowingMono = userRepository.findById(userIdFollowing).switchIfEmpty(Mono.error(new RuntimeException()));
         var userToFollowMono = userRepository.findById(userIdToFollow).switchIfEmpty(Mono.error(new RuntimeException()));
 

@@ -10,6 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface PostDetailsClient {
-    @GetExchange("/api/post/bulk/{postIds}")
+    @GetExchange("/api/post/bulk/list/{postIds}")
     Flux<Post> findPostsByIdsList(@PathVariable List<String> postIds);
 }

@@ -63,7 +63,7 @@ public class Neo4jDataInit {
             user2.setFollowing(Set.of(new UserFollow(user1)));
             userRepository.saveAll(List.of(user1, user2)).collectList().block();
 
-            var post1 = new Post("post_1", user1);
+            var post1 = new Post(user1);
             var comment1 = new Comment("comment_1", post1, null, user1);
             var comment2 = new Comment("comment_2", post1, null, user1);
             var comment3 = new Comment("comment_3", post1, comment2, user2);
@@ -72,7 +72,7 @@ public class Neo4jDataInit {
             commentRepository.saveAll(List.of(comment1, comment2, comment3)).collectList().block();
 
             System.out.println("------");
-//            postRepository.findPostByComment(comment2.getId()).doOnNext(System.out::println).block();
+            postRepository.findPostByComment(comment2.getId()).doOnNext(System.out::println).block();
             commentRepository.findCommentsByUser(user1.getId()).collectList().doOnNext(System.out::println).block();
         };
     }

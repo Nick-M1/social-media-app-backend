@@ -34,8 +34,15 @@ public class UserInfo {
     private String email;
     @NotBlank
     private String phoneNumber;
+
     @NotBlank
     private String profileImage;
+    @NotBlank
+    private String headerImage;
+    @NotBlank
+    private String descriptionBio;
+    @NotBlank
+    private String websiteUrl;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -43,7 +50,7 @@ public class UserInfo {
     private LocalDateTime modifiedAt;
 
 
-    public UserInfo(String username, String password, String firstName, String lastName, String email, String phoneNumber, String profileImage) {
+    public UserInfo(String username, String password, String firstName, String lastName, String email, String phoneNumber, String profileImage, String headerImage, String descriptionBio, String websiteUrl) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -51,6 +58,9 @@ public class UserInfo {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.profileImage = profileImage;
+        this.headerImage = headerImage;
+        this.descriptionBio = descriptionBio;
+        this.websiteUrl = websiteUrl;
     }
 }
 

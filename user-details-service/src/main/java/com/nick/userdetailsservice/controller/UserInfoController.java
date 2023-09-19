@@ -15,8 +15,16 @@ public class UserInfoController {
 
     @GetMapping("{userId}")
     public UserInfo getUserInfoById(@PathVariable UUID userId, @RequestHeader("x-user") String user, @RequestHeader("x-scope") String scope) {
-        System.out.println(user);
-        System.out.println(scope);
         return userInfoService.getUserById(userId);
+    }
+
+    @GetMapping("/username/{username}")
+    public UserInfo getUserInfoByUsername(@PathVariable String username) {
+        return userInfoService.getUserByUsername(username);
+    }
+
+    @GetMapping("/current")
+    public UserInfo getCurrentUser(@RequestHeader("x-user") String username) {
+        return userInfoService.getUserByUsername(username);
     }
 }

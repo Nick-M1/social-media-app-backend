@@ -1,12 +1,11 @@
 package com.nick.socialgraphservice.controller;
 
+import com.nick.socialgraphservice.dto.PostRequest;
 import com.nick.socialgraphservice.model.Post;
+import com.nick.socialgraphservice.model.User;
 import com.nick.socialgraphservice.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,8 +30,13 @@ public class PostController {
         return postService.findPostsByUserFollowing(userId);
     }
 
-//    @PutMapping
-//    public Mono<User> createUser(@RequestBody UserRequest userRequest) {
-//        return userService.createUser(userRequest);
-//    }
+    @PostMapping
+    public Mono<Post> createPost(@RequestBody PostRequest postRequest) {
+        return postService.createPost(postRequest);
+    }
+
+    @PutMapping("/like")
+    public Mono<User> updatePostLike(@RequestParam String userId, @RequestParam String postId, @RequestParam(defaultValue = "true") Boolean isLiked) {
+        return postService.updatePostLike(userId, postId, isLiked);
+    }
 }

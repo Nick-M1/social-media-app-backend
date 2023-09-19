@@ -13,13 +13,10 @@ public class Post {
     @GeneratedValue
     private String id;
 
-    private String postId;
-
     @Relationship(type = "CREATED_BY", direction = Relationship.Direction.OUTGOING)
     private User userCreatedBy;
 
-    public Post(String postId, User userCreatedBy) {
-        this.postId = postId;
+    public Post(User userCreatedBy) {
         this.userCreatedBy = userCreatedBy;
     }
 }

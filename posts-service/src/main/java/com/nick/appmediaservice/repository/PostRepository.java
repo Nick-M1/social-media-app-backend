@@ -5,9 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ReactiveElasticsearchRepository;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface PostRepository extends ReactiveElasticsearchRepository<Post, String> {
@@ -45,9 +43,9 @@ public interface PostRepository extends ReactiveElasticsearchRepository<Post, St
               }
             }
     """)
-    Flux<Post> findPostByTextSearch(String queryString);
+    Flux<Post> findPostsByTextSearch(String queryString);
 
-    Flux<Post> findPostsByUserIdOrderByCreatedAt(String userId, Pageable pageable);
+    Flux<Post> findPostsByUserId(String userId, Pageable pageable);
     Flux<Post> findPostsByUserIdInOrderByCreatedAt(List<String> userId, Pageable pageable);
     Flux<Post> findPostsByTagsContainsIgnoreCaseOrderByCreatedAt(List<String> tags, Pageable pageable);
 }

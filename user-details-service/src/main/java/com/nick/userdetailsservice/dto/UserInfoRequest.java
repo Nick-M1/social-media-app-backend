@@ -3,6 +3,7 @@ package com.nick.userdetailsservice.dto;
 import com.nick.userdetailsservice.model.UserInfo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public record UserInfoRequest (
         @NotBlank
@@ -18,9 +19,15 @@ public record UserInfoRequest (
         @NotBlank
         String phoneNumber,
         @NotBlank
-        String profileImage
+        String profileImage,
+        @NotBlank
+        String headerImage,
+        @NotBlank
+        String descriptionBio,
+        @NotBlank
+        String websiteUrl
 ) {
-    public UserInfo mapToUserInfo() {
-        return new UserInfo(username, password, firstName, lastName, email, phoneNumber, profileImage);
+    public UserInfo mapToUserInfo(PasswordEncoder passwordEncoder) {
+        return new UserInfo(username, passwordEncoder.encode(password), firstName, lastName, email, phoneNumber, profileImage, headerImage, descriptionBio, websiteUrl);
     }
 }

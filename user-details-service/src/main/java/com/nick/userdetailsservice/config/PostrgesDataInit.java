@@ -18,8 +18,8 @@ public class PostrgesDataInit {
             System.out.println("HELLO");
             userInfoRepository.deleteAll();
 
-            var user1 = new UserInfo("username", passwordEncoder.encode("password"), "firstname", "lastname", "email@gmail.com", "phonenumber", "profileimg");
-            var user2 = new UserInfo("hello", passwordEncoder.encode("password"), "firstname", "lastname", "email2@gmail.com", "phonenumber", "profileimg");
+            var user1 = new UserInfo("username", passwordEncoder.encode("password"), "firstname", "lastname", "email@gmail.com", "phonenumber", "profileimg", "headerimg", "working <b>Twitter</b> clone", "www.google.com");
+            var user2 = new UserInfo("hello", passwordEncoder.encode("password"), "firstname", "lastname", "email2@gmail.com", "phonenumber", "profileimg", "headerimg", "working <b>Twitter</b> clone", "www.youtube.com");
             userInfoRepository.saveAll(List.of(user1, user2));
 
             System.out.println(userInfoRepository.findAll());

@@ -7,6 +7,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface UserRepository extends ReactiveNeo4jRepository<User, String> {
+    @Query("MATCH (user:`User`) WHERE user.userId = $userId RETURN user")
+    Mono<User> findUserByUserId(String userId);
+
     @Query("MATCH (n)-[r:IS_FOLLOWING]->() where ELEMENTID(n) = $id RETURN COUNT(r)")
     Mono<Long> countOfFollowing(String id);
 

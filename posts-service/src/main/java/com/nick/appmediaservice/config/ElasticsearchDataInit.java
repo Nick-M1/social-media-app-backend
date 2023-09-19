@@ -5,7 +5,6 @@ import com.nick.appmediaservice.repository.PostRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -23,16 +22,16 @@ public class ElasticsearchDataInit {
             postRepository.saveAll(List.of(post1, post2, post3)).collectList().block();
 
             postRepository.findAll().collectList().doOnNext(System.out::println).block();
-            postRepository.findPostByTextSearch("hello").collectList().doOnNext(System.out::println).block();
-            postRepository.findPostByTextSearch("helli").collectList().doOnNext(System.out::println).block();
-            postRepository.findPostByTextSearch("hel").collectList().doOnNext(System.out::println).block();
-            postRepository.findPostByTextSearch("he").collectList().doOnNext(System.out::println).block();
+            postRepository.findPostsByTextSearch("hello").collectList().doOnNext(System.out::println).block();
+            postRepository.findPostsByTextSearch("helli").collectList().doOnNext(System.out::println).block();
+            postRepository.findPostsByTextSearch("hel").collectList().doOnNext(System.out::println).block();
+            postRepository.findPostsByTextSearch("he").collectList().doOnNext(System.out::println).block();
 
-            postRepository.findPostByTextSearch("hewww").collectList().doOnNext(System.out::println).block();
-            postRepository.findPostByTextSearch("sdsds").collectList().doOnNext(System.out::println).block();
+            postRepository.findPostsByTextSearch("hewww").collectList().doOnNext(System.out::println).block();
+            postRepository.findPostsByTextSearch("sdsds").collectList().doOnNext(System.out::println).block();
 
 
-            postRepository.findPostByTextSearch("tag_1").collectList().doOnNext(System.out::println).block();
+            postRepository.findPostsByTextSearch("tag_1").collectList().doOnNext(System.out::println).block();
         };
     }
 }
