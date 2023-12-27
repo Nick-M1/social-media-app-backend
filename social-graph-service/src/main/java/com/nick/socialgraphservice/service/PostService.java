@@ -39,6 +39,7 @@ public class PostService {
     }
 
     public Flux<Post> findPostsByUserFollowing(String userId) {
+        log.info("Get posts by users that user (with userId = {}) is following", userId);
         return userService.findFollowing(userId)
                 .map(User::getId)
                 .flatMap(this::findPostsByUser);
@@ -52,17 +53,34 @@ public class PostService {
     }
 
 
+//    @Transactional
+//    public Mono<User> updatePostLike(String userId, String postId, Boolean isLiked) {
+//        log.info("Update post-likes - user with userId={} likes post with postId={} is {}", userId, postId, isLiked);
+//        var user = userService.findUserByUserId(userId);
+//        var post = this.findPostById(postId);
+//
+//        return Mono.zip(user, post)
+//                .doOnNext(tuple -> {
+//                    if (isLiked)
+//                        tuple.getT1().getLikedPosts().add(tuple.getT2());
+//                    else
+//                        tuple.getT1().getLikedPosts().remove(tuple.getT2());
+//                })
+//                .map(Tuple2::getT1);
+//    }
+
     @Transactional
     public Mono<User> updatePostLike(String userId, String postId, Boolean isLiked) {
+        log.info("Update post-likes - user with userId={} likes post with postId={} is {}", userId, postId, isLiked);
         var user = userService.findUserByUserId(userId);
         var post = this.findPostById(postId);
 
         return Mono.zip(user, post)
                 .doOnNext(tuple -> {
                     if (isLiked)
-                        tuple.getT1().getLikedPosts().add(tuple.getT2());
+                        tuple.getT1().addLikedPost(tuple.getT2());
                     else
-                        tuple.getT1().getLikedPosts().remove(tuple.getT2());
+                        tuple.getT1().removeLikedPost(tuple.getT2());
                 })
                 .map(Tuple2::getT1);
     }

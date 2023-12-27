@@ -20,36 +20,36 @@ public class UserController {
         return userService.findAllUsers();
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "/{id}")
     public Mono<User> findUserById(@PathVariable String id) {
         return userService.findUserByUserId(id);
     }
 
-    @GetMapping(path = "count/following")
+    @GetMapping(path = "/count/following")
     public Mono<Long> countOfFollowing(@RequestParam String id) {
         return userService.countOfFollowing(id);
     }
-    @GetMapping(path = "count/followers")
+    @GetMapping(path = "/count/followers")
     public Mono<Long> countOfFollowers(@RequestParam String id) {
         return userService.countOfFollowers(id);
     }
-    @GetMapping(path = "count/liked")
+    @GetMapping(path = "/count/liked")
     public Mono<Long> countOfPostsLikedByUser(@RequestParam String id) {
         return userService.countOfPostsLikedByUser(id);
     }
-    @GetMapping(path = "boolean/following")
+    @GetMapping(path = "/boolean/following")
     public Mono<Boolean> isFollowing(@RequestParam String userId1, @RequestParam String userId2) {
         return userService.isFollowing(userId1, userId2);
     }
-    @GetMapping(path = "boolean/liked")
+    @GetMapping(path = "/boolean/liked")
     public Mono<Boolean> isLikedPost(@RequestParam String userId, @RequestParam String postId) {
         return userService.isLikedPost(userId, postId);
     }
-    @GetMapping(path = "followers")
+    @GetMapping(path = "/followers")
     public Flux<User> findFollowers(@RequestParam String id) {
         return userService.findFollowers(id);
     }
-    @GetMapping(path = "following")
+    @GetMapping(path = "/following")
     public Flux<User> findFollowing(@RequestParam String id) {
         return userService.findFollowing(id);
     }
@@ -57,5 +57,10 @@ public class UserController {
     @PostMapping
     public Mono<User> createUser(@RequestBody UserRequest userRequest) {
         return userService.createUser(userRequest);
+    }
+
+    @PutMapping(path = "/following")
+    public Mono<User> updateUserFollow(@RequestParam String userIdFollowing, @RequestParam String userIdToFollow, @RequestParam(defaultValue = "true") Boolean isFollowing) {
+        return userService.updateUserFollow(userIdFollowing, userIdToFollow, isFollowing);
     }
 }

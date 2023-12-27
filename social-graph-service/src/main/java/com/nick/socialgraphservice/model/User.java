@@ -8,7 +8,9 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Node
@@ -27,5 +29,24 @@ public class User {
         this.userId = userId;
         this.following = new HashSet<>();
         this.likedPosts = new HashSet<>();
+    }
+
+    public void addFollowing(User user) {
+        var userFollowRelationship = new UserFollow(user);
+        following.add(userFollowRelationship);
+    }
+
+    public void removeFollowing(User user) {
+        following = following.stream()
+                .filter(relationships -> !Objects.equals(relationships.getFollowedUser().getUserId(), user.getUserId()))
+                .collect(Collectors.toSet());
+    }
+
+    public void addLikedPost(Post post) {
+        likedPosts.add(post);
+    }
+
+    public void removeLikedPost(Post post) {
+        likedPosts.remove(post);
     }
 }

@@ -3,6 +3,7 @@ package com.nick.socialgraphservice.service;
 import com.nick.socialgraphservice.dto.UserRequest;
 import com.nick.socialgraphservice.model.User;
 import com.nick.socialgraphservice.model.relationships.UserFollow;
+import com.nick.socialgraphservice.repository.UserFollowRepository;
 import com.nick.socialgraphservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserFollowRepository userFollowRepository;
 
     public Flux<User> findAllUsers() {
         log.info("Get all users");
@@ -68,23 +70,57 @@ public class UserService {
         return userRepository.save(user);
     }
 
+//    @Transactional
+//    public Mono<User> updateUserFollow(String userIdFollowing, String userIdToFollow, Boolean isFollowing) {
+//        log.info("Update user-follow so that user1 (with id = {}) is following ({}) user2 (with id = {})", userIdFollowing, isFollowing, userIdToFollow);
+//
+//        var userFollowingMono = userRepository.findById(userIdFollowing).switchIfEmpty(Mono.error(new RuntimeException()));
+//        var userToFollowMono = userRepository.findById(userIdToFollow).switchIfEmpty(Mono.error(new RuntimeException()));
+//
+//        return Mono.zip(userFollowingMono, userToFollowMono)
+//                .filter(usersTuple -> !Objects.equals(usersTuple.getT1().getId(), usersTuple.getT2().getId()))
+//                .doOnNext(usersTuple -> {
+//                    if (isFollowing) {
+//                        var followingSet = usersTuple.getT1().getFollowing();
+//                        followingSet.add(new UserFollow(usersTuple.getT2()));
+//                        usersTuple.getT1().setFollowing(followingSet);
+//                    } else
+//                        usersTuple.getT1().setFollowing(
+//                                usersTuple.getT1().getFollowing().stream().filter(userFollow -> !Objects.equals(userFollow.getFollowedUser().getUserId(), userIdFollowing)).collect(Collectors.toSet())
+//                        );
+//                })
+//                .doOnNext(System.out::println)
+//                .map(Tuple2::getT1)
+//                .flatMap(userRepository::save)
+//                .flatMap(r -> userFollowRepository.saveAll(r.getFollowing()).collectList().map(h -> r));
+//    }
+
+//    @Transactional
+//    public Mono<User> updateUserFollow(String userIdFollowing, String userIdToFollow, Boolean isFollowing) {
+//        log.info("Update user-follow so that user1 (with id = {}) is following ({}) user2 (with id = {})", userIdFollowing, isFollowing, userIdToFollow);
+//
+//        var userFollowingMono = userRepository.findById(userIdFollowing).switchIfEmpty(Mono.error(new RuntimeException()));
+//        var userToFollowMono = userRepository.findById(userIdToFollow).switchIfEmpty(Mono.error(new RuntimeException()));
+//
+//        return Mono.zip(userFollowingMono, userToFollowMono)
+//                .filter(usersTuple -> !Objects.equals(usersTuple.getT1().getId(), usersTuple.getT2().getId()))
+//                .doOnNext(usersTuple -> {
+//                    if (isFollowing)
+//                        usersTuple.getT1().addFollowing(usersTuple.getT2());
+//                    else
+//                        usersTuple.getT1().removeFollowing(usersTuple.getT2());
+//                })
+//                .doOnNext(System.out::println)
+//                .map(Tuple2::getT1)
+////                .flatMap(userRepository::save)
+////                .flatMap(r -> userFollowRepository.saveAll(r.getFollowing()).collectList().map(h -> r))
+//                ;
+//    }
+
     @Transactional
     public Mono<User> updateUserFollow(String userIdFollowing, String userIdToFollow, Boolean isFollowing) {
         log.info("Update user-follow so that user1 (with id = {}) is following ({}) user2 (with id = {})", userIdFollowing, isFollowing, userIdToFollow);
-
-        var userFollowingMono = userRepository.findById(userIdFollowing).switchIfEmpty(Mono.error(new RuntimeException()));
-        var userToFollowMono = userRepository.findById(userIdToFollow).switchIfEmpty(Mono.error(new RuntimeException()));
-
-        return Mono.zip(userFollowingMono, userToFollowMono)
-                .filter(usersTuple -> !Objects.equals(usersTuple.getT1().getId(), usersTuple.getT2().getId()))
-                .doOnNext(usersTuple -> {
-                    if (isFollowing)
-                        usersTuple.getT1().getFollowing().add(new UserFollow(usersTuple.getT2()));
-                    else
-                        usersTuple.getT1().setFollowing(
-                                usersTuple.getT1().getFollowing().stream().filter(userFollow -> !Objects.equals(userFollow.getFollowedUser().getUserId(), userIdFollowing)).collect(Collectors.toSet())
-                        );
-                })
-                .map(Tuple2::getT1);
+        return userRepository.updateFollowRelationship(userIdFollowing, userIdToFollow)
+                .then(userRepository.findUserByUserId(userIdFollowing));
     }
 }

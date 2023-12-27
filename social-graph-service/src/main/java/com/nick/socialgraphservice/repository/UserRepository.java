@@ -46,4 +46,11 @@ public interface UserRepository extends ReactiveNeo4jRepository<User, String> {
         RETURN f
     """)
     Flux<User> findFollowing(String id);
+
+    @Query("""
+        MATCH (user1: User) WHERE ELEMENTID(user1) = $userId1
+        MATCH (user2: User) WHERE ELEMENTID(user2) = $userId2
+        CREATE (user1)-[rel:IS_FOLLOWING]->(user2)
+    """)
+    Mono<Void> updateFollowRelationship(String userId1, String userId2);
 }

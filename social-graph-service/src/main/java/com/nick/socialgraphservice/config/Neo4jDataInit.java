@@ -54,9 +54,9 @@ public class Neo4jDataInit {
     @Bean
     public CommandLineRunner postCommentDataInitializer(UserRepository userRepository, PostRepository postRepository, CommentRepository commentRepository) {
         return args -> {
-            userRepository.deleteAll().block();
-            postRepository.deleteAll().block();
-            commentRepository.deleteAll().block();
+//            userRepository.deleteAll().block();
+//            postRepository.deleteAll().block();
+//            commentRepository.deleteAll().block();
 
             var user1 = new User("1");
             var user2 = new User("2");
